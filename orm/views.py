@@ -2,6 +2,8 @@ from django.shortcuts import render
 from .models import Student
 from django.db import connection
 from django.db.models import Q
+from django.http import HttpResponse
+
 
 # Create your views here.
 
@@ -31,5 +33,10 @@ def student(request):
     print(connection.queries)
 
     return render(request,'student.html',{'student':student})
+
+def crud(request):
+    return render (request,'crud.html')
+
+
 
     
