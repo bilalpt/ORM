@@ -5,41 +5,31 @@ from django.db.models import Q
 from django.http import HttpResponse
 from django.utils import timezone
 from datetime import datetime
+from rest_framework.decorators import api_view
+from .serializers import *
+from rest_framework.response import Response
 
 
 
 
 # Create your views here.
 
-# def student(request):
-#     students=Student.objects.all()
-#     # print(students)
-#     print(students.query)
-#     print(connection.queries)
+@api_view(['GET'])
+def Fun(request):
+    students=Student.objects.all()
+    serilize=firstserializer(students,many=True)
 
-#     return render(request,'student.html',{'students':students})
+    return Response({'status': 200,'payload': serilize.data})
 
+@api_view(['POST'])
+def post_data(request):
+    data=request.data
+    one=firstserializer(data=request.data)
+    if not one.is_valid():
+        return Response({'status':404,'errors':one.errors})
+    one.save()
+    return Response({'status':200,'payload':one.user,'message':'you passed data will be'})
 
-def student(request):
-
-    # student=Student.objects.filter(surname__startswith='w',firstname='h')
-
-    student=Student.objects.filter(Q(firstname__startswith='h') & Q(surname__startswith='w'))
-
-    # student=Student.objects.filter(Q(surname__startwith='w') and Student.objects.filter(firstname__startwith='h')
-
-
-
-
-
-    print(student)
-    print(student.query)
-    print(connection.queries)
-
-    return render(request,'student.html',{'student':student})
-
-def crud(request):
-    return render (request,'crud.html')
 
 
 
