@@ -10,5 +10,6 @@ urlpatterns = [
     # path('',views.Fun,name='baxter'),
     # path('post',views.post_data,name='post')
     path('student', MyApiclass.as_view()),
+    path('api_register',Generate_token.as_view()),
 
 ]

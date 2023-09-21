@@ -6,7 +6,7 @@ from django.db import models
 
 class Teacher(models.Model):
     firstname = models.CharField(max_length=255)
-    surname   = models.CharField(max_length=255)
+    password   = models.CharField(max_length=255)
 
     # def __init__(self):
     #     return self.firstname

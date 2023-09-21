@@ -9,13 +9,54 @@ from rest_framework.decorators import api_view
 from .serializers import *
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.authtoken.models import Token
+
+
+from rest_framework.authentication import SessionAuthentication, BasicAuthentication,TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
+
 
 
 
 
 # Create your views here.
+ 
+class Generate_token(APIView):
+    authentication_classes=[SessionAuthentication, BasicAuthentication]
+    permission_classes=[IsAuthenticated]
+
+
+    def post(self,request):
+
+        print(request.data)
+        serializer= TokenSerializer(data=request.data)
+
+        # print(serializer.data)
+        
+        if not serializer.is_valid():
+            return Response({'status':403, 'error':serializer.errors ,'out':'username and password are incorrect'})
+        
+        serializer.save()
+        user=User.objects.get(username=serializer.data['username'])
+        print(user)
+        print("Found user:", user)
+        token_obj ,_ =    Token.objects.get_or_create(user=user)
+
+
+        return Response({'status':200 ,'get':'token will get'})
+
+        
+
+
+
+
+
+
 
 class MyApiclass(APIView):
+
+
+
 
     def get(self,request):
         std=Student.objects.all()
